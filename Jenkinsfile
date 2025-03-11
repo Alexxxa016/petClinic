@@ -9,18 +9,18 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'mvn clean install'
+                bat 'mvn clean install'
             }
         }
         stage('Test') {
             steps {
-                sh 'mvn test'
+                bat 'mvn test'
             }
         }
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('YourSonarQubeServerName') {
-                    sh 'mvn sonar:sonar -Dsonar.projectKey=petclinic -Dsonar.host.url=https://sonarcloud.io'
+                    bat 'mvn sonar:sonar -Dsonar.projectKey=petclinic -Dsonar.host.url=https://sonarcloud.io'
                 }
             }
         }
