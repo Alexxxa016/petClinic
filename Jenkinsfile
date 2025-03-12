@@ -31,6 +31,7 @@ pipeline {
             steps {
                 script {
                     def mvnHome = tool 'Maven3'
+                    // Force Maven/Java to use IPv4 by adding -Djava.net.preferIPv4Stack=true
                     bat "\"${mvnHome}\\bin\\mvn\" -Djava.net.preferIPv4Stack=true sonar:sonar -Dsonar.projectKey=petClinic -Dsonar.organization=alexxxa016 -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=e2f03d600aecd3d96d306941d3421dbc1b0a8388"
                 }
             }
@@ -41,18 +42,10 @@ pipeline {
             junit 'target/surefire-reports/*.xml'
         }
         success {
-            discordSend webhookURL: 'https://discordapp.com/api/webhooks/1349452587828641853/dDVLmlCxc2fIwt6COEkWMeLSWv3RPbN189NP8Jy54Mgks_7XbfQFT63XhV5qB5JeyT6v',
-                        channel: 'jenkins-notifications',
-                        message: " Build succeeded",
-                        color: 'green'
-            echo 'Build succeeded!'
+            echo ' Build succeeded!!'
         }
         failure {
-            discordSend webhookURL: 'https://discordapp.com/api/webhooks/1349452587828641853/dDVLmlCxc2fIwt6COEkWMeLSWv3RPbN189NP8Jy54Mgks_7XbfQFT63XhV5qB5JeyT6v',
-                        channel: 'jenkins-notifications',
-                        message: " Build failed",
-                        color: 'red'
-            echo 'Build failed!'
+            echo ' Build failed!.'
         }
     }
 }
