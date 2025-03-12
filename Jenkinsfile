@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'Maven3' 
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -9,18 +13,27 @@ pipeline {
         }
         stage('Build') {
             steps {
-                bat 'mvn clean install'
+                script {
+                    def mvnHome = tool 'Maven3'
+                    bat "\"${mvnHome}\\bin\\mvn\" clean install"
+                }
             }
         }
         stage('Test') {
             steps {
-                bat 'mvn test'
+                script {
+                    def mvnHome = tool 'Maven3'
+                    bat "\"${mvnHome}\\bin\\mvn\" test"
+                }
             }
         }
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('YourSonarQubeServerName') {
-                    bat 'mvn sonar:sonar -Dsonar.projectKey=petclinic -Dsonar.host.url=https://sonarcloud.io'
+                    script {
+                        def mvnHome = tool 'Maven3'
+                        bat "\"${mvnHome}\\bin\\mvn\" sonar:sonar -Dsonar.projectKey=petclinic -Dsonar.host.url=https://sonarcloud.io"
+                    }
                 }
             }
         }
@@ -30,10 +43,10 @@ pipeline {
             junit 'target/surefire-reports/*.xml'
         }
         success {
-            echo 'Build succeeded!'
+            echo ' Build succeeded!'
         }
         failure {
-            echo 'Build failed.'
+            echo ' Build failed.'
         }
     }
 }
