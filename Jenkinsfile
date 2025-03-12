@@ -42,16 +42,14 @@ pipeline {
             junit 'target/surefire-reports/*.xml'
         }
         success {
-            echo ' Build succeeded!!'
-            discordSend webhookURL: 'https://discordapp.com/api/webhooks/1349452587828641853/dDVLmlCxc2fIwt6COEkWMeLSWv3RPbN189NP8Jy54Mgks_7XbfQFT63XhV5qB5JeyT6v',
-                        content: " Build succeeded: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                        color: 'green'
+            echo 'Build succeeded!!'
+            // Send Discord notification via curl on success
+            bat 'curl -H "Content-Type: application/json" -d "{\\"content\\": \\" Build succeeded: ${env.JOB_NAME} #${env.BUILD_NUMBER}\\"}" https://discordapp.com/api/webhooks/1349452587828641853/dDVLmlCxc2fIwt6COEkWMeLSWv3RPbN189NP8Jy54Mgks_7XbfQFT63XhV5qB5JeyT6v'
         }
         failure {
-            echo ' Build failed!.'
-            discordSend webhookURL: 'https://discordapp.com/api/webhooks/1349452587828641853/dDVLmlCxc2fIwt6COEkWMeLSWv3RPbN189NP8Jy54Mgks_7XbfQFT63XhV5qB5JeyT6v',
-                        content: " Build failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                        color: 'red'
+            echo 'Build failed!.'
+            // Send Discord notification via curl on failure
+            bat 'curl -H "Content-Type: application/json" -d "{\\"content\\": \\" Build failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}\\"}" https://discordapp.com/api/webhooks/1349452587828641853/dDVLmlCxc2fIwt6COEkWMeLSWv3RPbN189NP8Jy54Mgks_7XbfQFT63XhV5qB5JeyT6v'
         }
     }
 }
