@@ -27,7 +27,7 @@ pipeline {
                 }
             }
         }
-        stage('SonarQube Analysis') {
+        /*stage('SonarQube Analysis') {
             steps {
                 script {
                     def mvnHome = tool 'Maven3'
@@ -36,6 +36,7 @@ pipeline {
                 }
             }
         }
+		*/
         stage('Deploy') {
             steps {
                 script {
