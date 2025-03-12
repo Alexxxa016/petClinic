@@ -43,14 +43,14 @@ pipeline {
         success {
             discordSend webhookURL: 'https://discordapp.com/api/webhooks/1349452587828641853/dDVLmlCxc2fIwt6COEkWMeLSWv3RPbN189NP8Jy54Mgks_7XbfQFT63XhV5qB5JeyT6v',
                         channel: 'jenkins-notifications',
-                        message: " Build succeeded: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                        message: " Build succeeded",
                         color: 'green'
             echo 'Build succeeded!'
         }
         failure {
             discordSend webhookURL: 'https://discordapp.com/api/webhooks/1349452587828641853/dDVLmlCxc2fIwt6COEkWMeLSWv3RPbN189NP8Jy54Mgks_7XbfQFT63XhV5qB5JeyT6v',
                         channel: 'jenkins-notifications',
-                        message: " Build failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                        message: " Build failed",
                         color: 'red'
             echo 'Build failed!'
         }
