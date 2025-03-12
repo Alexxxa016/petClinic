@@ -43,9 +43,15 @@ pipeline {
         }
         success {
             echo ' Build succeeded!!'
+            discordSend webhookURL: 'https://discordapp.com/api/webhooks/1349452587828641853/dDVLmlCxc2fIwt6COEkWMeLSWv3RPbN189NP8Jy54Mgks_7XbfQFT63XhV5qB5JeyT6v',
+                        message: " Build succeeded: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                        color: 'green'
         }
         failure {
             echo ' Build failed!.'
+            discordSend webhookURL: 'https://discordapp.com/api/webhooks/1349452587828641853/dDVLmlCxc2fIwt6COEkWMeLSWv3RPbN189NP8Jy54Mgks_7XbfQFT63XhV5qB5JeyT6v',
+                        message: " Build failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                        color: 'red'
         }
     }
 }
