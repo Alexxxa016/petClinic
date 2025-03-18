@@ -27,7 +27,7 @@ pipeline {
                 }
             }
         }
-        /*stage('SonarQube Analysis') {
+        stage('SonarQube Analysis') {
             steps {
                 script {
                     def mvnHome = tool 'Maven3'
@@ -36,14 +36,17 @@ pipeline {
                 }
             }
         }
-		*/
         stage('Deploy') {
             steps {
                 script {
-                    // Build the Docker image tagged as "petclinic"
+                    // Build the Docker image locally tagged as "petclinic"
                     bat "docker build -t petclinic ."
-                    // Run the Docker container in detached mode, mapping port 8080
-                    bat "docker run -d -p 8080:8080 --rm --name petclinic_container petclinic"
+                    
+                    // Deploy to AWS EC2:
+                    // This SSH command connects to your EC2 instance and:
+                    // 1. Removes any existing container named petclinic_container (ignoring errors if not present)
+                    // 2. Runs the new container mapping port 8080.
+                    bat 'ssh -i "C:\\Users\\T00222705\\Downloads\\petclinic-key.pem" ec2-user@3.89.139.25 "docker rm -f petclinic_container || true && docker run -d -p 8080:8080 --rm --name petclinic_container petclinic"'
                 }
             }
         }
@@ -55,7 +58,7 @@ pipeline {
         success {
             echo 'Build succeeded!!'
             script {
-                def message = " Build succeeded: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
+                def message = "Build succeeded: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
                 bat """
                 curl -H "Content-Type: application/json" -d "{\\"content\\": \\"${message}\\"}" https://discordapp.com/api/webhooks/1349452587828641853/dDVLmlCxc2fIwt6COEkWMeLSWv3RPbN189NP8Jy54Mgks_7XbfQFT63XhV5qB5JeyT6v
                 """
@@ -64,7 +67,7 @@ pipeline {
         failure {
             echo 'Build failed!.'
             script {
-                def message = " Build failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
+                def message = "Build failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}"
                 bat """
                 curl -H "Content-Type: application/json" -d "{\\"content\\": \\"${message}\\"}" https://discordapp.com/api/webhooks/1349452587828641853/dDVLmlCxc2fIwt6COEkWMeLSWv3RPbN189NP8Jy54Mgks_7XbfQFT63XhV5qB5JeyT6v
                 """
