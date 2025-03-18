@@ -35,14 +35,14 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
-            steps {
-                script {
-                    bat "docker build -t petclinic ."
-                    bat 'ssh -i "C:\\Users\\T00222705\\Downloads\\petclinic-key.pem" ec2-user@54.146.104.77 "docker rm -f petclinic_container || true && docker run -d -p 8080:8080 --rm --name petclinic_container petclinic"'
-                }
-            }
+       stage('Deploy') {
+    steps {
+        script {
+            bat "docker build -t petclinic ."
+            bat 'ssh -i "C:\\Users\\T00222705\\Downloads\\petclinic-key.pem" ec2-user@54.146.104.77 "docker rm -f petclinic_container || true && docker run -d -p 8080:8080 --rm --name petclinic_container petclinic"'
         }
+    }
+}
     }
     post {
         always {
